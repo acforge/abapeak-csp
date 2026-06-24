@@ -1,0 +1,1470 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <title>AbaPeak — ABA session notes in seconds</title>
+    <meta
+      name="description"
+      content="AI-powered ABA session notes for BCBAs and BCaBAs. Generate compliant 97155-HN and 97156-HN notes in seconds — with client data that never leaves your device."
+    />
+    <meta
+      name="theme-color"
+      content="#FAFAF7"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#0F1413"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://abapeak.com" />
+    <meta
+      property="og:title"
+      content="AbaPeak — ABA session notes in seconds"
+    />
+    <meta
+      property="og:description"
+      content="AI-powered ABA session notes for BCBAs and BCaBAs. Generate compliant 97155-HN and 97156-HN notes in seconds — with client data that never leaves your device."
+    />
+    <meta property="og:site_name" content="AbaPeak" />
+
+    <!-- Twitter / X -->
+    <meta name="twitter:card" content="summary" />
+    <meta
+      name="twitter:title"
+      content="AbaPeak — ABA session notes in seconds"
+    />
+    <meta
+      name="twitter:description"
+      content="AI-powered ABA session notes for BCBAs and BCaBAs. Generate compliant 97155-HN and 97156-HN notes in seconds — with client data that never leaves your device."
+    />
+
+    <link rel="icon" href="favicon.svg" />
+
+    <!-- Fonts: Sora 600/700, Inter 400/500 from Google Fonts CDN -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=Sora:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      /* ============================================================
+       Design tokens
+       ============================================================ */
+      :root {
+        --font-display:
+          "Sora", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+          sans-serif;
+        --font-body:
+          "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI",
+          sans-serif;
+        --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+        --dur-fast: 140ms;
+      }
+
+      /* ============================================================
+       Light theme (default)
+       ============================================================ */
+      :root,
+      html[data-theme="light"] {
+        --bg: #fafaf7;
+        --bg-elev: #ffffff;
+        --bg-muted: #f4f3ee;
+        --brand-teal: #0e7c7b;
+        --brand-teal-deep: #0a5e5d;
+        --brand-teal-soft: #e6f1f0;
+        --brand-forest: #1e3a3a;
+        --brand-amber: #f2a65a;
+        --fg: #13201f;
+        --fg-2: #3a4847;
+        --fg-3: #5a6b69;
+        --line: #e8e6de;
+        --line-strong: #d6d2c6;
+        --success: #2f8f6f;
+        --danger: #b4453b;
+        --on-primary: #fafaf7;
+        --focus-ring: rgba(14, 124, 123, 0.22);
+      }
+
+      /* ============================================================
+       Dark theme — OS preference
+       ============================================================ */
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg: #0f1413;
+          --bg-elev: #18211f;
+          --bg-muted: #16201e;
+          --brand-teal: #2dd4bf;
+          --brand-teal-deep: #5eead4;
+          --brand-teal-soft: #15302d;
+          --brand-forest: #a7c5c2;
+          --brand-amber: #f2a65a;
+          --fg: #e6edeb;
+          --fg-2: #b8c8c5;
+          --fg-3: #8fa29f;
+          --line: #243330;
+          --line-strong: #34433f;
+          --success: #34d399;
+          --danger: #f87171;
+          --on-primary: #0f1413;
+          --focus-ring: rgba(45, 212, 191, 0.3);
+        }
+      }
+
+      /* ============================================================
+       Dark theme — explicit override
+       ============================================================ */
+      html[data-theme="dark"] {
+        --bg: #0f1413;
+        --bg-elev: #18211f;
+        --bg-muted: #16201e;
+        --brand-teal: #2dd4bf;
+        --brand-teal-deep: #5eead4;
+        --brand-teal-soft: #15302d;
+        --brand-forest: #a7c5c2;
+        --brand-amber: #f2a65a;
+        --fg: #e6edeb;
+        --fg-2: #b8c8c5;
+        --fg-3: #8fa29f;
+        --line: #243330;
+        --line-strong: #34433f;
+        --success: #34d399;
+        --danger: #f87171;
+        --on-primary: #0f1413;
+        --focus-ring: rgba(45, 212, 191, 0.3);
+      }
+
+      /* ============================================================
+       Base
+       ============================================================ */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font-family: var(--font-body);
+        -webkit-font-smoothing: antialiased;
+        overflow-x: hidden;
+        transition:
+          background-color 220ms var(--ease-out),
+          color 220ms var(--ease-out);
+      }
+
+      img,
+      svg {
+        max-width: 100%;
+        height: auto;
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
+      a:focus-visible,
+      button:focus-visible,
+      input:focus-visible {
+        outline: 0;
+        box-shadow: 0 0 0 3px var(--focus-ring);
+      }
+
+      /* ============================================================
+       Page layout
+       ============================================================ */
+      .page {
+        min-height: 100vh;
+        display: grid;
+        grid-template-rows: auto 1fr auto;
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 20px clamp(16px, 4vw, 56px) 28px;
+      }
+
+      .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: nowrap;
+        min-width: 0;
+      }
+      .topbar > * {
+        min-width: 0;
+      }
+      .topbar .right {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        flex: none;
+      }
+      @media (max-width: 359px) {
+        .topbar .right {
+          gap: 10px;
+        }
+      }
+
+      main {
+        display: flex;
+        align-items: flex-start;
+        padding: clamp(40px, 8vh, 96px) 0 clamp(48px, 8vh, 96px);
+      }
+      main > * {
+        width: 100%;
+        min-width: 0;
+      }
+
+      /* ============================================================
+       Hero — single column mobile, two columns >=900px
+       ============================================================ */
+      .hero {
+        display: grid;
+        gap: 28px;
+        width: 100%;
+        grid-template-columns: 1fr;
+        align-items: start;
+      }
+      .hero > * {
+        min-width: 0;
+      }
+      .hero > .hero-h1 {
+        max-width: 620px;
+      }
+      .hero > .hero-sub {
+        max-width: 560px;
+      }
+      .hero > .hero-form-wrap {
+        max-width: 560px;
+      }
+      .hero > .hero-features {
+        max-width: 560px;
+        width: 100%;
+      }
+
+      .who-for {
+        margin: 0;
+        max-width: 620px;
+        font-family: var(--font-body);
+        font-style: italic;
+        font-size: 14px;
+        color: var(--fg-3);
+        line-height: 1.55;
+      }
+
+      @media (min-width: 900px) {
+        .hero {
+          grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+          column-gap: clamp(56px, 7vw, 96px);
+          row-gap: 28px;
+          min-height: min(64vh, 520px);
+          align-items: start;
+        }
+        .hero > .hero-h1 {
+          grid-column: 1;
+          grid-row: 1;
+          max-width: none;
+        }
+        .hero > .hero-sub {
+          grid-column: 1;
+          grid-row: 2;
+          max-width: none;
+        }
+        .hero > .hero-form-wrap {
+          grid-column: 1;
+          grid-row: 3;
+          max-width: none;
+        }
+        .hero > .who-for {
+          grid-column: 1;
+          grid-row: 4;
+          max-width: none;
+          margin-top: 6px;
+        }
+        .hero > .hero-features {
+          grid-column: 2;
+          grid-row: 1 / span 4;
+          align-self: center;
+          justify-self: start;
+          max-width: none;
+          width: 100%;
+        }
+      }
+
+      /* ============================================================
+       Footer
+       ============================================================ */
+      .footer {
+        border-top: 1px solid var(--line);
+        padding-top: 20px;
+        display: grid;
+        gap: 14px;
+        font-family: var(--font-body);
+        font-size: 13px;
+        color: var(--fg-3);
+        line-height: 1.6;
+      }
+      .footer-row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        gap: 8px 24px;
+        color: var(--fg-2);
+        width: 100%;
+      }
+      .footer-links {
+        display: inline-flex;
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 18px;
+        white-space: nowrap;
+      }
+      .footer-link {
+        color: var(--brand-forest);
+        text-decoration: none;
+        border-bottom: 1px solid var(--line-strong);
+        padding-bottom: 1px;
+        transition:
+          border-color 140ms var(--ease-out),
+          color 140ms var(--ease-out);
+      }
+      .footer-link:hover {
+        color: var(--brand-teal);
+        border-bottom-color: var(--brand-teal);
+      }
+      .footer-link--icon {
+        display: inline-flex;
+        align-items: center;
+        gap: 0;
+        line-height: 1;
+      }
+      .footer-link--icon svg {
+        color: inherit;
+      }
+      .footer-privacy {
+        color: var(--fg-3);
+        width: 100%;
+      }
+
+      /* ============================================================
+       Logo
+       ============================================================ */
+      .logo {
+        display: inline-block;
+        text-decoration: none;
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 22px;
+        letter-spacing: -0.014em;
+        color: var(--brand-teal);
+        line-height: 1;
+      }
+
+      /* ============================================================
+       Theme toggle
+       ============================================================ */
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--brand-forest);
+        cursor: pointer;
+        transition:
+          background-color 140ms var(--ease-out),
+          border-color 140ms var(--ease-out),
+          color 140ms var(--ease-out);
+      }
+      .theme-toggle:hover {
+        background: var(--bg-muted);
+        border-color: var(--line-strong);
+        color: var(--brand-teal);
+      }
+
+      .icon-moon { display: block; }
+      .icon-sun  { display: none;  }
+      html[data-theme="dark"] .icon-moon { display: none;  }
+      html[data-theme="dark"] .icon-sun  { display: block; }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) .icon-moon { display: none;  }
+        :root:not([data-theme="light"]) .icon-sun  { display: block; }
+      }
+
+      /* ============================================================
+       Amber underline highlight
+       ============================================================ */
+      .amber-highlight {
+        position: relative;
+        display: inline-block;
+        white-space: nowrap;
+      }
+      .amber-highlight::after {
+        content: "";
+        position: absolute;
+        left: 0.06em;
+        right: 0.06em;
+        bottom: -0.04em;
+        height: 0.08em;
+        background: var(--brand-amber);
+        border-radius: 9999px;
+      }
+
+      /* ============================================================
+       Form shared
+       ============================================================ */
+      .honeypot-field {
+        position: absolute;
+        left: -9999px;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .email-form {
+        display: grid;
+        gap: 10px;
+        width: 100%;
+        max-width: 560px;
+      }
+
+      .ap-field {
+        height: 52px;
+        padding: 0 16px;
+        border-radius: 12px;
+        font-family: var(--font-body);
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 1;
+        border: 1px solid var(--line-strong);
+        background: var(--bg-elev);
+        color: var(--fg);
+        width: 100%;
+        outline: 0;
+        transition:
+          border-color 140ms var(--ease-out),
+          box-shadow 140ms var(--ease-out),
+          background-color 140ms var(--ease-out);
+        -webkit-appearance: none;
+        appearance: none;
+      }
+      .ap-field::placeholder { color: var(--fg-3); }
+      .ap-field:focus {
+        border-color: var(--brand-teal);
+        box-shadow: 0 0 0 3px var(--focus-ring);
+      }
+      .ap-field[aria-invalid="true"] { border-color: var(--danger); }
+
+      .ap-btn {
+        height: 52px;
+        padding: 0 22px;
+        border-radius: 12px;
+        font-family: var(--font-body);
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 1;
+        border: 0;
+        background: var(--brand-teal);
+        color: var(--on-primary);
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background-color 140ms var(--ease-out);
+        -webkit-appearance: none;
+        appearance: none;
+      }
+      .ap-btn:hover:not(:disabled) { background: var(--brand-teal-deep); }
+      .ap-btn:active:not(:disabled) { background: var(--brand-teal-deep); }
+      .ap-btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+      .ap-btn--sm {
+        height: 38px;
+        padding: 0 16px;
+        font-size: 14px;
+        border-radius: 10px;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+
+      .form-row {
+        display: flex;
+        gap: 10px;
+        align-items: stretch;
+        width: 100%;
+      }
+      .form-row > * { flex: 1 1 0; min-width: 0; }
+      @media (max-width: 599px) {
+        .form-row { flex-direction: column; }
+        .form-row > * { flex: none; width: 100%; }
+      }
+
+      .email-helper {
+        font-family: var(--font-body);
+        font-size: 13px;
+        color: var(--fg-3);
+        line-height: 1.4;
+      }
+      .email-helper.is-error { color: var(--danger); }
+
+      /* ============================================================
+       Success state (shared)
+       ============================================================ */
+      .email-success {
+        display: none;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 18px 20px;
+        background: var(--brand-teal-soft);
+        border-radius: 14px;
+        width: 100%;
+        max-width: 560px;
+        font-family: var(--font-body);
+      }
+      .email-success.is-visible { display: flex; }
+
+      .success-icon {
+        margin-top: 2px;
+        width: 24px;
+        height: 24px;
+        border-radius: 999px;
+        background: var(--success);
+        color: var(--on-primary);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+      .success-title {
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 18px;
+        letter-spacing: -0.012em;
+        line-height: 1.25;
+        color: var(--fg);
+      }
+      .success-body {
+        margin-top: 6px;
+        font-size: 14.5px;
+        line-height: 1.55;
+        color: var(--fg-2);
+      }
+
+      /* ============================================================
+       Features list
+       ============================================================ */
+      .features-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 22px;
+        width: 100%;
+      }
+      .feature-item {
+        display: grid;
+        grid-template-columns: 20px 1fr;
+        gap: 14px;
+        align-items: start;
+      }
+      .feature-check {
+        margin-top: 6px;
+        width: 20px;
+        height: 20px;
+        border-radius: 999px;
+        background: var(--brand-teal-soft);
+        color: var(--brand-teal);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+      .feature-title {
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 16px;
+        color: var(--fg);
+        letter-spacing: -0.01em;
+        line-height: 1.35;
+      }
+      .feature-sub {
+        margin-top: 4px;
+        font-family: var(--font-body);
+        font-size: 14px;
+        color: var(--fg-2);
+        line-height: 1.55;
+      }
+
+      /* ============================================================
+       Reveal-on-scroll
+       ============================================================ */
+      .reveal {
+        transition:
+          opacity 720ms var(--ease-out),
+          transform 720ms var(--ease-out);
+      }
+      html.js-reveals-armed .reveal:not(.is-visible) {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        html.js-reveals-armed .reveal:not(.is-visible) { opacity: 1; transform: none; }
+        .reveal { transition: none; }
+        html, body { transition: none; }
+      }
+
+      /* ============================================================
+       Topbar nav
+       ============================================================ */
+      .topbar-nav { display: none; }
+      @media (min-width: 680px) {
+        .topbar-nav {
+          display: flex;
+          align-items: center;
+          gap: 24px;
+          flex: 1;
+          margin-left: 32px;
+        }
+      }
+      .topbar-nav-link {
+        font-family: var(--font-body);
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--fg-2);
+        text-decoration: none;
+        transition: color 140ms var(--ease-out);
+        white-space: nowrap;
+      }
+      .topbar-nav-link:hover { color: var(--brand-teal); }
+
+      /* ============================================================
+       Shared section layout
+       ============================================================ */
+      .section-block {
+        margin-top: clamp(64px, 10vh, 120px);
+        padding-top: clamp(48px, 7vh, 80px);
+        border-top: 1px solid var(--line);
+        width: 100%;
+      }
+      .section-heading {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: clamp(1.5rem, 4vw, 2.25rem);
+        letter-spacing: -0.018em;
+        line-height: 1.1;
+        color: var(--fg);
+        margin: 0 0 12px;
+      }
+      .section-sub {
+        font-family: var(--font-body);
+        font-size: clamp(15px, 2vw, 17px);
+        color: var(--fg-2);
+        margin: 0 0 clamp(32px, 5vh, 56px);
+        line-height: 1.55;
+        max-width: 600px;
+      }
+
+      /* ============================================================
+       How It Works
+       ============================================================ */
+      .steps-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        display: grid;
+        gap: 32px;
+        max-width: 680px;
+      }
+      @media (min-width: 680px) {
+        .steps-list { grid-template-columns: repeat(3, 1fr); gap: 40px; }
+      }
+      .step-item {
+        display: grid;
+        grid-template-columns: 36px 1fr;
+        gap: 16px;
+        align-items: start;
+      }
+      @media (min-width: 680px) {
+        .step-item { grid-template-columns: 1fr; gap: 14px; }
+      }
+      .step-num {
+        width: 36px;
+        height: 36px;
+        border-radius: 999px;
+        background: var(--brand-teal-soft);
+        color: var(--brand-teal);
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 15px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex: none;
+      }
+      .step-title {
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 16px;
+        color: var(--fg);
+        letter-spacing: -0.01em;
+        line-height: 1.35;
+        margin-bottom: 6px;
+      }
+      .step-body {
+        font-family: var(--font-body);
+        font-size: 14px;
+        color: var(--fg-2);
+        line-height: 1.6;
+      }
+
+      /* ============================================================
+       Pricing
+       ============================================================ */
+      .pricing-grid {
+        display: grid;
+        gap: 20px;
+        grid-template-columns: 1fr;
+      }
+      @media (min-width: 680px) {
+        .pricing-grid { grid-template-columns: repeat(3, 1fr); }
+      }
+      .pricing-card {
+        position: relative;
+        background: var(--bg-elev);
+        border: 1px solid var(--line-strong);
+        border-radius: 16px;
+        padding: 28px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+      .pricing-card--featured {
+        border-color: var(--brand-teal);
+        box-shadow: 0 0 0 1px var(--brand-teal);
+      }
+      .pricing-badge {
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--brand-teal);
+        color: var(--on-primary);
+        font-family: var(--font-body);
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        padding: 4px 12px;
+        border-radius: 999px;
+        white-space: nowrap;
+      }
+      .pricing-plan {
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 14px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--fg-3);
+      }
+      .pricing-amount {
+        font-family: var(--font-display);
+        font-weight: 700;
+        font-size: 2.25rem;
+        letter-spacing: -0.02em;
+        color: var(--fg);
+        line-height: 1;
+      }
+      .pricing-per {
+        font-size: 1rem;
+        font-weight: 500;
+        color: var(--fg-3);
+        letter-spacing: 0;
+      }
+      .pricing-equiv {
+        font-family: var(--font-body);
+        font-size: 13px;
+        color: var(--brand-teal);
+        font-weight: 500;
+        margin-top: -6px;
+      }
+      .pricing-features {
+        list-style: none;
+        margin: 8px 0 0;
+        padding: 0;
+        display: grid;
+        gap: 8px;
+        flex: 1;
+      }
+      .pricing-features li {
+        font-family: var(--font-body);
+        font-size: 14px;
+        color: var(--fg-2);
+        line-height: 1.4;
+        padding-left: 18px;
+        position: relative;
+      }
+      .pricing-features li::before {
+        content: "✓";
+        position: absolute;
+        left: 0;
+        color: var(--brand-teal);
+        font-size: 12px;
+        font-weight: 700;
+      }
+      .pricing-cta {
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: auto;
+      }
+      .pricing-trial-note {
+        margin-top: 24px;
+        font-family: var(--font-body);
+        font-size: 13px;
+        color: var(--fg-3);
+        line-height: 1.55;
+        max-width: 600px;
+      }
+
+      /* ============================================================
+       FAQ
+       ============================================================ */
+      .faq-list { margin: 0; padding: 0; display: grid; gap: 0; max-width: 720px; }
+      .faq-item { border-top: 1px solid var(--line); padding: 20px 0; }
+      .faq-item:last-child { border-bottom: 1px solid var(--line); }
+      .faq-q {
+        font-family: var(--font-display);
+        font-weight: 600;
+        font-size: 16px;
+        color: var(--fg);
+        letter-spacing: -0.01em;
+        line-height: 1.35;
+        margin: 0 0 10px;
+      }
+      .faq-a {
+        font-family: var(--font-body);
+        font-size: 14.5px;
+        color: var(--fg-2);
+        line-height: 1.65;
+        margin: 0;
+      }
+
+      /* ============================================================
+       Contact / CS-01
+       ============================================================ */
+      .contact-phi-warning {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 14px 18px;
+        background: color-mix(in srgb, var(--brand-amber) 12%, var(--bg));
+        border: 1px solid color-mix(in srgb, var(--brand-amber) 35%, transparent);
+        border-radius: 12px;
+        font-family: var(--font-body);
+        font-size: 14px;
+        color: var(--fg-2);
+        line-height: 1.55;
+        margin-bottom: 28px;
+        max-width: 600px;
+      }
+      .contact-form { display: grid; gap: 20px; max-width: 560px; }
+      .contact-field-group { display: grid; gap: 6px; }
+      .contact-label {
+        font-family: var(--font-body);
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--fg-2);
+      }
+      .contact-textarea {
+        height: auto;
+        padding: 14px 16px;
+        resize: vertical;
+        min-height: 120px;
+        line-height: 1.55;
+      }
+      .contact-field-err {
+        font-family: var(--font-body);
+        font-size: 13px;
+        color: var(--danger);
+        min-height: 1em;
+      }
+      .contact-submit { justify-self: start; }
+    </style>
+
+    <!-- Apply persisted theme before first paint to avoid flash. -->
+    <script>
+      (function () {
+        try {
+          var s = sessionStorage.getItem("abapeak-theme");
+          if (s === "light" || s === "dark") {
+            document.documentElement.setAttribute("data-theme", s);
+          }
+        } catch (e) {}
+
+        try {
+          var noMotion =
+            window.matchMedia &&
+            window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+          var hasIO = "IntersectionObserver" in window;
+          if (!noMotion && hasIO) {
+            document.documentElement.classList.add("js-reveals-armed");
+            window.__abapeakRevealsActive = false;
+            setTimeout(function () {
+              if (!window.__abapeakRevealsActive) {
+                document.documentElement.classList.remove("js-reveals-armed");
+                var nodes = document.querySelectorAll(".reveal");
+                for (var i = 0; i < nodes.length; i++)
+                  nodes[i].classList.add("is-visible");
+              }
+            }, 2000);
+          }
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="page">
+      <!-- ====================================================== -->
+      <!-- Topbar                                                  -->
+      <!-- ====================================================== -->
+      <header class="topbar">
+        <a href="/" aria-label="AbaPeak home" class="logo">AbaPeak</a>
+        <nav class="topbar-nav" aria-label="Page sections">
+          <a href="#how-it-works" class="topbar-nav-link">How it works</a>
+          <a href="#pricing" class="topbar-nav-link">Pricing</a>
+          <a href="#contact" class="topbar-nav-link">Contact</a>
+        </nav>
+        <div class="right">
+          <a href="https://app.abapeak.com" class="ap-btn ap-btn--sm">Try it free &rarr;</a>
+          <button
+            type="button"
+            id="theme-toggle"
+            class="theme-toggle"
+            aria-label="Switch to dark theme"
+            title="Switch to dark theme"
+            aria-pressed="false"
+          >
+            <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+            </svg>
+            <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <line x1="12" y1="2" x2="12" y2="4" />
+              <line x1="12" y1="20" x2="12" y2="22" />
+              <line x1="4.93" y1="4.93" x2="6.34" y2="6.34" />
+              <line x1="17.66" y1="17.66" x2="19.07" y2="19.07" />
+              <line x1="2" y1="12" x2="4" y2="12" />
+              <line x1="20" y1="12" x2="22" y2="12" />
+              <line x1="4.93" y1="19.07" x2="6.34" y2="17.66" />
+              <line x1="17.66" y1="6.34" x2="19.07" y2="4.93" />
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- ====================================================== -->
+      <!-- Main content                                           -->
+      <!-- ====================================================== -->
+      <main>
+        <!-- Hero -->
+        <section class="hero">
+          <h1
+            class="reveal hero-h1"
+            style="margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(2rem,6.5vw,3.75rem);line-height:1.08;letter-spacing:-0.022em;color:var(--fg);text-wrap:balance;"
+          >
+            Clinical notes.<br />
+            Done in&nbsp;<span class="amber-highlight">seconds</span><span style="color:var(--brand-teal)">.</span>
+          </h1>
+
+          <p
+            class="reveal hero-sub"
+            style="margin:0;font-family:var(--font-body);font-size:clamp(15px,2.4vw,18px);line-height:1.55;color:var(--fg-2);transition-delay:80ms;"
+          >
+            AbaPeak turns a quick session summary into a complete, DAP-format
+            clinical note for BCBAs and BCaBAs &mdash; in under 30 seconds.
+          </p>
+
+          <div class="reveal hero-form-wrap" style="transition-delay:160ms">
+            <form id="email-capture-form" class="email-form" novalidate>
+              <label for="email-input" class="sr-only">Work email address</label>
+              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="honeypot-field" />
+              <div class="form-row">
+                <input
+                  id="email-input"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                  placeholder="you@clinic.com"
+                  aria-label="Work email"
+                  aria-describedby="email-helper"
+                  class="ap-field"
+                />
+                <button type="submit" class="ap-btn">Join the waitlist</button>
+              </div>
+              <div id="email-helper" class="email-helper">
+                No spam. We&rsquo;ll let you know the moment it&rsquo;s live.
+              </div>
+            </form>
+            <div id="email-success" class="email-success" role="status" aria-live="polite">
+              <span class="success-icon">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+              <div>
+                <div class="success-title">You&rsquo;re in. Welcome.</div>
+                <div class="success-body">
+                  Thanks for trusting us with your inbox. We&rsquo;re heads-down
+                  building AbaPeak, and you&rsquo;ll be among the very first to
+                  know when it&rsquo;s ready. One email when we launch &mdash;
+                  no noise before it, no spam after it. That&rsquo;s a promise.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="reveal hero-features" style="transition-delay:200ms">
+            <ul class="features-list">
+              <li class="reveal feature-item" style="transition-delay:220ms">
+                <span aria-hidden="true" class="feature-check">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                </span>
+                <div>
+                  <div class="feature-title">Your data never leaves your device</div>
+                  <div class="feature-sub">Client names and identifying details are scrubbed in your browser before anything is sent. Zero patient information on our servers.</div>
+                </div>
+              </li>
+              <li class="reveal feature-item" style="transition-delay:330ms">
+                <span aria-hidden="true" class="feature-check">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                </span>
+                <div>
+                  <div class="feature-title">A finished note in under 30 seconds</div>
+                  <div class="feature-sub">Describe the session in plain language and AbaPeak writes the DAP note &mdash; turning roughly eight minutes of writing into a few seconds. Copy it. Done.</div>
+                </div>
+              </li>
+              <li class="reveal feature-item" style="transition-delay:440ms">
+                <span aria-hidden="true" class="feature-check">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                </span>
+                <div>
+                  <div class="feature-title">Built for ABA, not generic healthcare</div>
+                  <div class="feature-sub">97155-HN and 97156-HN note types, DAP format, credential-aware. Not a one-size-fits-all notes app.</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <p class="reveal who-for" style="transition-delay:260ms">
+            Made for the BCBAs and BCaBAs who&rsquo;d rather be doing the work than writing it up.
+          </p>
+        </section>
+
+        <!-- How It Works -->
+        <section id="how-it-works" class="reveal section-block" aria-labelledby="how-heading">
+          <h2 id="how-heading" class="section-heading">How it works</h2>
+          <p class="section-sub">Three steps. Under two minutes from first field to finished draft.</p>
+          <ol class="steps-list">
+            <li class="step-item">
+              <span class="step-num" aria-hidden="true">1</span>
+              <div>
+                <div class="step-title">Fill in the session summary</div>
+                <div class="step-body">Enter your client alias, the date, session duration, what happened, and what you&rsquo;re planning next. No free-text narrative &mdash; structured fields only.</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <span class="step-num" aria-hidden="true">2</span>
+              <div>
+                <div class="step-title">Client data is scrubbed on your device</div>
+                <div class="step-body">Before anything is sent, AbaPeak replaces any detected identifiers with placeholders. What leaves your device is already de-identified.</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <span class="step-num" aria-hidden="true">3</span>
+              <div>
+                <div class="step-title">Review, finalize, copy to your EHR</div>
+                <div class="step-body">A complete DAP-format first draft is ready in seconds. You review it, correct anything that&rsquo;s off, and paste it into your EHR. The clinical judgment stays yours.</div>
+              </div>
+            </li>
+          </ol>
+        </section>
+
+        <!-- Pricing -->
+        <section id="pricing" class="reveal section-block" aria-labelledby="pricing-heading">
+          <h2 id="pricing-heading" class="section-heading">Simple pricing</h2>
+          <p class="section-sub">Start free for 10 days &mdash; no credit card required.</p>
+          <div class="pricing-grid">
+            <div class="pricing-card">
+              <div class="pricing-plan">Monthly</div>
+              <div class="pricing-amount">$15<span class="pricing-per">/mo</span></div>
+              <ul class="pricing-features">
+                <li>Unlimited 97155-HN + 97156-HN notes</li>
+                <li>DAP format, credential-aware</li>
+                <li>Note history on your device</li>
+                <li>Cancel any time</li>
+              </ul>
+              <a href="https://app.abapeak.com" class="ap-btn pricing-cta">Start free trial</a>
+            </div>
+            <div class="pricing-card pricing-card--featured">
+              <div class="pricing-badge">Best value</div>
+              <div class="pricing-plan">Annual</div>
+              <div class="pricing-amount">$144<span class="pricing-per">/yr</span></div>
+              <div class="pricing-equiv">$12/month &mdash; save $36</div>
+              <ul class="pricing-features">
+                <li>Everything in Monthly</li>
+                <li>2 months free vs monthly</li>
+                <li>Priority support</li>
+              </ul>
+              <a href="https://app.abapeak.com" class="ap-btn pricing-cta">Start free trial</a>
+            </div>
+            <div class="pricing-card">
+              <div class="pricing-plan">Lifetime</div>
+              <div class="pricing-amount">$149<span class="pricing-per"> once</span></div>
+              <div class="pricing-equiv">Limited to 150 seats</div>
+              <ul class="pricing-features">
+                <li>Everything in Monthly</li>
+                <li>Pay once, use forever</li>
+                <li>No subscription</li>
+              </ul>
+              <a href="https://app.abapeak.com" class="ap-btn pricing-cta">Get lifetime access</a>
+            </div>
+          </div>
+          <p class="pricing-trial-note">
+            All plans include a <strong>10-day free trial</strong>, no credit card required.
+            Trial includes up to 2 caregiver training notes and 1 protocol modification note per day.
+          </p>
+        </section>
+
+        <!-- FAQ -->
+        <section id="faq" class="reveal section-block" aria-labelledby="faq-heading">
+          <h2 id="faq-heading" class="section-heading">Common questions</h2>
+          <dl class="faq-list">
+            <div class="faq-item">
+              <dt class="faq-q">Is AbaPeak HIPAA-compliant?</dt>
+              <dd class="faq-a">AbaPeak is not a HIPAA-covered entity and does not function as a Business Associate. The system is designed so that client identifiers are replaced with placeholders on your device before any request is transmitted &mdash; our servers never receive readable client information. You are responsible for using client aliases (not real names) in all fields.</dd>
+            </div>
+            <div class="faq-item">
+              <dt class="faq-q">What note types does AbaPeak support?</dt>
+              <dd class="faq-a">AbaPeak generates DAP-format notes for CPT codes 97155-HN (Protocol Modification) and 97156-HN (Caregiver Training), for both BCBAs and BCaBAs.</dd>
+            </div>
+            <div class="faq-item">
+              <dt class="faq-q">Where are my notes stored?</dt>
+              <dd class="faq-a">Notes are saved only in your browser&rsquo;s local storage on your own device. They are not stored on our servers. Clearing your browser data or switching devices will remove your note history.</dd>
+            </div>
+            <div class="faq-item">
+              <dt class="faq-q">Can I cancel my subscription?</dt>
+              <dd class="faq-a">Yes. Monthly and annual subscriptions can be cancelled any time through your Lemon Squeezy account. Cancellation takes effect at the end of your current billing period.</dd>
+            </div>
+            <div class="faq-item">
+              <dt class="faq-q">What browsers does AbaPeak support?</dt>
+              <dd class="faq-a">AbaPeak works on Chrome, Edge, Firefox, and Safari on desktop and mobile. Chrome or Edge on Windows/Mac is recommended for the best experience. Some native date and time pickers behave differently across browsers &mdash; typed entry is always supported as a fallback.</dd>
+            </div>
+          </dl>
+        </section>
+
+        <!-- Contact / CS-01 -->
+        <section id="contact" class="reveal section-block" aria-labelledby="contact-heading">
+          <h2 id="contact-heading" class="section-heading">Get in touch</h2>
+          <p class="section-sub">Questions, feedback, or need help? We reply within 24&ndash;48 hours.</p>
+          <div class="contact-phi-warning" role="note">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:2px">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span>
+              <strong>Do not include client names, dates of birth, or any other identifying information</strong> in your message.
+              Describe your issue without referencing specific clients or clinical session content.
+            </span>
+          </div>
+          <form id="contact-form" class="contact-form" novalidate aria-label="Contact form">
+            <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="honeypot-field" />
+            <div class="contact-field-group">
+              <label for="contact-email" class="contact-label">Your email <span aria-hidden="true">*</span></label>
+              <input
+                id="contact-email"
+                name="email"
+                type="email"
+                autocomplete="email"
+                placeholder="you@clinic.com"
+                aria-required="true"
+                aria-describedby="contact-email-err"
+                class="ap-field"
+              />
+              <span id="contact-email-err" class="contact-field-err" role="alert" aria-live="polite"></span>
+            </div>
+            <div class="contact-field-group">
+              <label for="contact-message" class="contact-label">Message <span aria-hidden="true">*</span></label>
+              <textarea
+                id="contact-message"
+                name="message"
+                rows="5"
+                placeholder="Describe your question or issue — do not include client names or PHI."
+                aria-required="true"
+                aria-describedby="contact-message-err"
+                class="ap-field contact-textarea"
+              ></textarea>
+              <span id="contact-message-err" class="contact-field-err" role="alert" aria-live="polite"></span>
+            </div>
+            <button type="submit" class="ap-btn contact-submit">Send message</button>
+          </form>
+          <div id="contact-success" class="email-success" role="status" aria-live="polite" style="display:none;margin-top:16px">
+            <span class="success-icon">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </span>
+            <div>
+              <div class="success-title">Message received.</div>
+              <div class="success-body">We&rsquo;ll reply to your email within 24&ndash;48 hours.</div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- ====================================================== -->
+      <!-- Footer                                                  -->
+      <!-- ====================================================== -->
+      <footer class="reveal footer">
+        <div class="footer-row">
+          <span>&copy; 2026 AbaPeak. All rights reserved.</span>
+          <span class="footer-links">
+            <a href="mailto:hello@abapeak.com" class="footer-link">hello@abapeak.com</a>
+            <a href="https://www.linkedin.com/company/abapeak" target="_blank" rel="noopener noreferrer" class="footer-link footer-link--icon" aria-label="AbaPeak on LinkedIn">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" style="display:inline-block;vertical-align:-2px;margin-right:6px;flex:none;">
+                <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.02-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.95v5.66H9.36V9h3.41v1.56h.05c.48-.9 1.64-1.85 3.38-1.85 3.61 0 4.27 2.38 4.27 5.47v6.27zM5.34 7.43a2.06 2.06 0 1 1 0-4.13 2.06 2.06 0 0 1 0 4.13zM7.12 20.45H3.55V9h3.57v11.45zM22.22 0H1.77C.79 0 0 .77 0 1.72v20.56C0 23.23.79 24 1.77 24h20.45c.98 0 1.78-.77 1.78-1.72V1.72C24 .77 23.2 0 22.22 0z"/>
+              </svg>
+              <span>LinkedIn</span>
+            </a>
+            <a href="/tos" class="footer-link">Terms of Service</a>
+            <a href="/privacy" class="footer-link">Privacy Policy</a>
+          </span>
+        </div>
+        <div class="footer-privacy">
+          We collect just your email, and use it for one thing: to tell you when we launch.
+        </div>
+      </footer>
+    </div>
+    <!-- /.page -->
+
+    <script>
+      /* ============================================================
+       Theme toggle
+       ============================================================ */
+      var themeBtn = document.getElementById("theme-toggle");
+
+      function getEffectiveTheme() {
+        var attr = document.documentElement.getAttribute("data-theme");
+        if (attr === "light" || attr === "dark") return attr;
+        return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+      }
+
+      function syncToggleAria(theme) {
+        var isDark = theme === "dark";
+        var label = isDark ? "Switch to light theme" : "Switch to dark theme";
+        themeBtn.setAttribute("aria-label", label);
+        themeBtn.setAttribute("title", label);
+        themeBtn.setAttribute("aria-pressed", String(isDark));
+      }
+
+      syncToggleAria(getEffectiveTheme());
+
+      themeBtn.addEventListener("click", function () {
+        var next = getEffectiveTheme() === "dark" ? "light" : "dark";
+        document.documentElement.setAttribute("data-theme", next);
+        try { sessionStorage.setItem("abapeak-theme", next); } catch (e) {}
+        syncToggleAria(next);
+      });
+
+      if (window.matchMedia) {
+        var osMq = window.matchMedia("(prefers-color-scheme: dark)");
+        var onOsChange = function () {
+          var attr = document.documentElement.getAttribute("data-theme");
+          if (attr !== "light" && attr !== "dark") syncToggleAria(osMq.matches ? "dark" : "light");
+        };
+        if (osMq.addEventListener) osMq.addEventListener("change", onOsChange);
+        else if (osMq.addListener) osMq.addListener(onOsChange);
+      }
+
+      /* ============================================================
+       Waitlist form — POST to Formspree (meedkyqj)
+       ============================================================ */
+      var form = document.getElementById("email-capture-form");
+      var input = document.getElementById("email-input");
+      var helper = document.getElementById("email-helper");
+      var success = document.getElementById("email-success");
+
+      function setHelperError(msg) {
+        input.setAttribute("aria-invalid", "true");
+        helper.textContent = msg;
+        helper.classList.add("is-error");
+        helper.setAttribute("role", "alert");
+      }
+      function clearHelperError() {
+        input.removeAttribute("aria-invalid");
+        helper.textContent = "No spam. We'll let you know the moment it's live.";
+        helper.classList.remove("is-error");
+        helper.removeAttribute("role");
+      }
+
+      input.addEventListener("input", function () {
+        if (input.getAttribute("aria-invalid") === "true") clearHelperError();
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var email = input.value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          setHelperError("Please enter a valid email address.");
+          input.focus();
+          return;
+        }
+        var btn = form.querySelector(".ap-btn");
+        btn.disabled = true;
+        btn.textContent = "Sending\u2026";
+        fetch("https://formspree.io/f/meedkyqj", {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        })
+          .then(function (res) { if (!res.ok) throw new Error("server-error"); return res.json(); })
+          .then(function () { form.style.display = "none"; success.classList.add("is-visible"); })
+          .catch(function () {
+            btn.disabled = false;
+            btn.textContent = "Join the waitlist";
+            setHelperError("Something went wrong \u2014 please try again or email us at hello@abapeak.com.");
+          });
+      });
+
+      /* ============================================================
+       Contact form — POST to Formspree (xnjkjnjq) — CS-01
+       ============================================================ */
+      var contactForm = document.getElementById("contact-form");
+      var contactEmail = document.getElementById("contact-email");
+      var contactEmailErr = document.getElementById("contact-email-err");
+      var contactMessage = document.getElementById("contact-message");
+      var contactMessageErr = document.getElementById("contact-message-err");
+      var contactSuccess = document.getElementById("contact-success");
+
+      function setContactErr(field, errEl, msg) {
+        field.setAttribute("aria-invalid", "true");
+        errEl.textContent = msg;
+      }
+      function clearContactErr(field, errEl) {
+        field.removeAttribute("aria-invalid");
+        errEl.textContent = "";
+      }
+
+      contactEmail.addEventListener("input", function () {
+        if (contactEmail.getAttribute("aria-invalid") === "true") clearContactErr(contactEmail, contactEmailErr);
+      });
+      contactMessage.addEventListener("input", function () {
+        if (contactMessage.getAttribute("aria-invalid") === "true") clearContactErr(contactMessage, contactMessageErr);
+      });
+
+      contactForm.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var valid = true;
+        var emailVal = contactEmail.value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+          setContactErr(contactEmail, contactEmailErr, "Please enter a valid email address.");
+          valid = false;
+        }
+        var msgVal = contactMessage.value.trim();
+        if (msgVal.length < 10) {
+          setContactErr(contactMessage, contactMessageErr, "Please enter a message (at least 10 characters).");
+          valid = false;
+        }
+        if (!valid) return;
+        var submitBtn = contactForm.querySelector(".contact-submit");
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Sending\u2026";
+        fetch("https://formspree.io/f/xnjkjnjq", {
+          method: "POST",
+          body: new FormData(contactForm),
+          headers: { Accept: "application/json" },
+        })
+          .then(function (res) { if (!res.ok) throw new Error("server-error"); return res.json(); })
+          .then(function () { contactForm.style.display = "none"; contactSuccess.style.display = "flex"; })
+          .catch(function () {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Send message";
+            setContactErr(contactMessage, contactMessageErr, "Something went wrong \u2014 please try again or email hello@abapeak.com directly.");
+          });
+      });
+
+      /* ============================================================
+       Reveal-on-scroll
+       ============================================================ */
+      function armReveals() {
+        window.__abapeakRevealsActive = true;
+        var noMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        var targets = Array.from(document.querySelectorAll(".reveal"));
+        if (!targets.length) return;
+        if (noMotion || !("IntersectionObserver" in window)) {
+          document.documentElement.classList.remove("js-reveals-armed");
+          targets.forEach(function (t) { t.classList.add("is-visible"); });
+          return;
+        }
+        var safety = setTimeout(function () { targets.forEach(function (t) { t.classList.add("is-visible"); }); }, 1500);
+        var io = new IntersectionObserver(
+          function (entries) {
+            entries.forEach(function (entry) {
+              if (entry.isIntersecting) { entry.target.classList.add("is-visible"); io.unobserve(entry.target); }
+            });
+          },
+          { rootMargin: "0px 0px -8% 0px", threshold: 0.01 }
+        );
+        targets.forEach(function (t) { io.observe(t); });
+        requestAnimationFrame(function () {
+          targets.forEach(function (t) {
+            var r = t.getBoundingClientRect();
+            if (r.top < window.innerHeight && r.bottom > 0) { t.classList.add("is-visible"); io.unobserve(t); }
+          });
+        });
+        window.addEventListener("scroll", function checkDone() {
+          if (targets.every(function (t) { return t.classList.contains("is-visible"); })) {
+            clearTimeout(safety);
+            window.removeEventListener("scroll", checkDone);
+          }
+        }, { passive: true });
+      }
+
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          try { armReveals(); } catch (err) {
+            document.documentElement.classList.remove("js-reveals-armed");
+            document.querySelectorAll(".reveal").forEach(function (t) { t.classList.add("is-visible"); });
+          }
+        });
+      });
+    </script>
+  </body>
+</html>
