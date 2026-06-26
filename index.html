@@ -949,8 +949,46 @@
         } catch (e) {}
       })();
     </script>
+    <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
   </head>
   <body>
+    <script>
+      // Lemon.js checkout overlay wiring — env-aware (DL-197).
+      // LIVE buy URLs on abapeak.com; TEST buy URLs on any other host
+      // (localhost / *.pages.dev preview) so the full flow can be clicked free.
+      (function () {
+        var isLive = window.location.hostname === "abapeak.com";
+        var LS_URLS = isLive
+          ? {
+              monthly: "https://abapeak.lemonsqueezy.com/checkout/buy/54f9df78-3874-4363-abf7-d129f2872c57?embed=1",
+              annual: "https://abapeak.lemonsqueezy.com/checkout/buy/43a50a91-a99c-4f89-ad14-0ed59c7c9584?embed=1",
+              lifetime: "https://abapeak.lemonsqueezy.com/checkout/buy/77f92b5f-5492-4689-8fc4-a93ce12f14cb?embed=1"
+            }
+          : {
+              monthly: "https://abapeak.lemonsqueezy.com/checkout/buy/5b96b413-c4b6-4575-9a5b-703ad1151f91?embed=1",
+              annual: "https://abapeak.lemonsqueezy.com/checkout/buy/065a82df-09a8-432a-bd00-aba7d2308325?embed=1",
+              lifetime: "https://abapeak.lemonsqueezy.com/checkout/buy/a1f7483e-fc42-49d9-ba13-20a0567b3520?embed=1"
+            };
+
+        document.addEventListener("DOMContentLoaded", function () {
+          // Pricing CTAs, in DOM order: Monthly, Annual (featured), Lifetime.
+          var ctas = document.querySelectorAll("#pricing a.pricing-cta");
+          if (ctas.length === 3) {
+            ctas[0].setAttribute("href", LS_URLS.monthly);
+            ctas[0].classList.add("lemonsqueezy-button");
+            ctas[1].setAttribute("href", LS_URLS.annual);
+            ctas[1].classList.add("lemonsqueezy-button");
+            ctas[2].setAttribute("href", LS_URLS.lifetime);
+            ctas[2].classList.add("lemonsqueezy-button");
+            // Class is added post-load, so re-init Lemon.js handlers
+            // (lemon.js auto-binds only on initial script execution).
+            if (typeof window.createLemonSqueezy === "function") {
+              window.createLemonSqueezy();
+            }
+          }
+        });
+      })();
+    </script>
     <div class="page">
       <!-- ====================================================== -->
       <!-- Topbar                                                  -->
