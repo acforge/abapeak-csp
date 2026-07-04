@@ -119,6 +119,14 @@
       <h3>d. License key</h3>
       <p>When you enter your license key, it is converted to a non-reversible hash and stored locally on your device. The hashed value is transmitted to our servers only to verify that you hold a valid license. The raw license key is never stored on our servers.</p>
 
+      <h3>e. Trial abuse-prevention data (free trial only)</h3>
+      <p>To keep the free trial fair and prevent circumvention of trial limits, AbaPeak's trial mode processes two pieces of technical metadata:</p>
+      <ul>
+        <li>A device fingerprint derived from your browser's user-agent string, kept only for your current browser session and transmitted only as a one-way (SHA-256) hash.</li>
+        <li>Your IP address, used only in hashed form.</li>
+      </ul>
+      <p>These are used solely to enforce daily trial-note limits and prevent abuse. They are not linked to any session note content, client information, or account identity; are never used for advertising or cross-site tracking; and are not collected once you activate a paid license. This metadata is processed at our edge network purely for rate-limiting, under the same no-identifiable-PHI-logging posture as the rest of the service.</p>
+
       <h2>4. How AbaPeak Handles Session Data</h2>
       <p>AbaPeak's architecture is designed to minimize the clinical information that leaves your device:</p>
       <ul>
