@@ -950,6 +950,7 @@
       })();
     </script>
     <script src="https://assets.lemonsqueezy.com/lemon.js" defer></script>
+    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
   </head>
   <body>
     <script>
@@ -1060,6 +1061,7 @@
                   name="email"
                   type="email"
                   autocomplete="email"
+                  maxlength="254"
                   placeholder="you@clinic.com"
                   aria-label="Work email"
                   aria-describedby="email-helper"
@@ -1070,6 +1072,7 @@
               <div id="email-helper" class="email-helper">
                 No spam. We&rsquo;ll let you know the moment it&rsquo;s live.
               </div>
+              <div id="waitlist-turnstile" class="cf-turnstile" data-sitekey="0x4AAAAAAEGaP50MWdjarGda" data-callback="turnstileNoop" data-expired-callback="onWaitlistTurnstileExpired" data-error-callback="onWaitlistTurnstileError"></div>
             </form>
             <div id="email-success" class="email-success" role="status" aria-live="polite">
               <span class="success-icon">
@@ -1252,6 +1255,7 @@
                 name="email"
                 type="email"
                 autocomplete="email"
+                maxlength="254"
                 placeholder="you@clinic.com"
                 aria-required="true"
                 aria-describedby="contact-email-err"
@@ -1265,6 +1269,7 @@
                 id="contact-message"
                 name="message"
                 rows="5"
+                maxlength="2000"
                 placeholder="Describe your question or issue — do not include client names or PHI."
                 aria-required="true"
                 aria-describedby="contact-message-err"
@@ -1272,6 +1277,7 @@
               ></textarea>
               <span id="contact-message-err" class="contact-field-err" role="alert" aria-live="polite"></span>
             </div>
+            <div id="contact-turnstile" class="cf-turnstile" data-sitekey="0x4AAAAAAEGaP50MWdjarGda" data-callback="turnstileNoop" data-expired-callback="onContactTurnstileExpired" data-error-callback="onContactTurnstileError"></div>
             <button type="submit" class="ap-btn contact-submit">Send message</button>
           </form>
           <div id="contact-success" class="email-success" role="status" aria-live="polite" style="display:none;margin-top:16px">
@@ -1319,38 +1325,57 @@
        ============================================================ */
       var themeBtn = document.getElementById("theme-toggle");
 
-      function getEffectiveTheme() {
-        var attr = document.documentElement.getAttribute("data-theme");
-        if (attr === "light" || attr === "dark") return attr;
-        return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
-      }
-
-      function syncToggleAria(theme) {
-        var isDark = theme === "dark";
-        var label = isDark ? "Switch to light theme" : "Switch to dark theme";
-        themeBtn.setAttribute("aria-label", label);
-        themeBtn.setAttribute("title", label);
-        themeBtn.setAttribute("aria-pressed", String(isDark));
-      }
-
-      syncToggleAria(getEffectiveTheme());
-
-      themeBtn.addEventListener("click", function () {
-        var next = getEffectiveTheme() === "dark" ? "light" : "dark";
-        document.documentElement.setAttribute("data-theme", next);
-        try { sessionStorage.setItem("abapeak-theme", next); } catch (e) {}
-        syncToggleAria(next);
-      });
-
-      if (window.matchMedia) {
-        var osMq = window.matchMedia("(prefers-color-scheme: dark)");
-        var onOsChange = function () {
+      if (themeBtn) {
+        var getEffectiveTheme = function () {
           var attr = document.documentElement.getAttribute("data-theme");
-          if (attr !== "light" && attr !== "dark") syncToggleAria(osMq.matches ? "dark" : "light");
+          if (attr === "light" || attr === "dark") return attr;
+          return window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
         };
-        if (osMq.addEventListener) osMq.addEventListener("change", onOsChange);
-        else if (osMq.addListener) osMq.addListener(onOsChange);
+
+        var syncToggleAria = function (theme) {
+          var isDark = theme === "dark";
+          var label = isDark ? "Switch to light theme" : "Switch to dark theme";
+          themeBtn.setAttribute("aria-label", label);
+          themeBtn.setAttribute("title", label);
+          themeBtn.setAttribute("aria-pressed", String(isDark));
+        };
+
+        syncToggleAria(getEffectiveTheme());
+
+        themeBtn.addEventListener("click", function () {
+          var next = getEffectiveTheme() === "dark" ? "light" : "dark";
+          document.documentElement.setAttribute("data-theme", next);
+          try { sessionStorage.setItem("abapeak-theme", next); } catch (e) {}
+          syncToggleAria(next);
+        });
+
+        if (window.matchMedia) {
+          var osMq = window.matchMedia("(prefers-color-scheme: dark)");
+          var onOsChange = function () {
+            var attr = document.documentElement.getAttribute("data-theme");
+            if (attr !== "light" && attr !== "dark") syncToggleAria(osMq.matches ? "dark" : "light");
+          };
+          if (osMq.addEventListener) osMq.addEventListener("change", onOsChange);
+          else if (osMq.addListener) osMq.addListener(onOsChange);
+        }
       }
+
+      /* ============================================================
+       Turnstile — shared helpers (Managed mode; token lives in the
+       auto-injected cf-turnstile-response field, read via FormData)
+       ============================================================ */
+      function turnstileNoop() {}
+      function resetTurnstileWidget(containerId) {
+        try {
+          if (window.turnstile && typeof window.turnstile.reset === "function") {
+            window.turnstile.reset(containerId);
+          }
+        } catch (e) {}
+      }
+      function onWaitlistTurnstileExpired() { resetTurnstileWidget("waitlist-turnstile"); }
+      function onWaitlistTurnstileError() { resetTurnstileWidget("waitlist-turnstile"); }
+      function onContactTurnstileExpired() { resetTurnstileWidget("contact-turnstile"); }
+      function onContactTurnstileError() { resetTurnstileWidget("contact-turnstile"); }
 
       /* ============================================================
        Waitlist form — POST to Formspree (meedkyqj)
@@ -1360,47 +1385,55 @@
       var helper = document.getElementById("email-helper");
       var success = document.getElementById("email-success");
 
-      function setHelperError(msg) {
-        input.setAttribute("aria-invalid", "true");
-        helper.textContent = msg;
-        helper.classList.add("is-error");
-        helper.setAttribute("role", "alert");
-      }
-      function clearHelperError() {
-        input.removeAttribute("aria-invalid");
-        helper.textContent = "No spam. We'll let you know the moment it's live.";
-        helper.classList.remove("is-error");
-        helper.removeAttribute("role");
-      }
+      if (form && input && helper && success) {
+        var setHelperError = function (msg) {
+          input.setAttribute("aria-invalid", "true");
+          helper.textContent = msg;
+          helper.classList.add("is-error");
+          helper.setAttribute("role", "alert");
+        };
+        var clearHelperError = function () {
+          input.removeAttribute("aria-invalid");
+          helper.textContent = "No spam. We'll let you know the moment it's live.";
+          helper.classList.remove("is-error");
+          helper.removeAttribute("role");
+        };
 
-      input.addEventListener("input", function () {
-        if (input.getAttribute("aria-invalid") === "true") clearHelperError();
-      });
+        input.addEventListener("input", function () {
+          if (input.getAttribute("aria-invalid") === "true") clearHelperError();
+        });
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        var email = input.value.trim();
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          setHelperError("Please enter a valid email address.");
-          input.focus();
-          return;
-        }
-        var btn = form.querySelector(".ap-btn");
-        btn.disabled = true;
-        btn.textContent = "Sending\u2026";
-        fetch("https://formspree.io/f/meedkyqj", {
-          method: "POST",
-          body: new FormData(form),
-          headers: { Accept: "application/json" },
-        })
-          .then(function (res) { if (!res.ok) throw new Error("server-error"); return res.json(); })
-          .then(function () { form.style.display = "none"; success.classList.add("is-visible"); })
-          .catch(function () {
-            btn.disabled = false;
-            btn.textContent = "Join the waitlist";
-            setHelperError("Something went wrong \u2014 please try again or email us at hello@abapeak.com.");
-          });
-      });
+        form.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var email = input.value.trim();
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+            setHelperError("Please enter a valid email address.");
+            input.focus();
+            return;
+          }
+          var tsField = form.querySelector('[name="cf-turnstile-response"]');
+          if (!tsField || !tsField.value) {
+            resetTurnstileWidget("waitlist-turnstile");
+            setHelperError("Please complete the verification and try again.");
+            return;
+          }
+          var btn = form.querySelector(".ap-btn");
+          btn.disabled = true;
+          btn.textContent = "Sending\u2026";
+          fetch("https://formspree.io/f/meedkyqj", {
+            method: "POST",
+            body: new FormData(form),
+            headers: { Accept: "application/json" },
+          })
+            .then(function (res) { if (!res.ok) throw new Error("server-error"); return res.json(); })
+            .then(function () { form.style.display = "none"; success.classList.add("is-visible"); })
+            .catch(function () {
+              btn.disabled = false;
+              btn.textContent = "Join the waitlist";
+              setHelperError("Something went wrong \u2014 please try again or email us at hello@abapeak.com.");
+            });
+        });
+      }
 
       /* ============================================================
        Contact form — POST to Formspree (xnjkjnjq) — CS-01
@@ -1412,52 +1445,60 @@
       var contactMessageErr = document.getElementById("contact-message-err");
       var contactSuccess = document.getElementById("contact-success");
 
-      function setContactErr(field, errEl, msg) {
-        field.setAttribute("aria-invalid", "true");
-        errEl.textContent = msg;
-      }
-      function clearContactErr(field, errEl) {
-        field.removeAttribute("aria-invalid");
-        errEl.textContent = "";
-      }
+      if (contactForm && contactEmail && contactEmailErr && contactMessage && contactMessageErr && contactSuccess) {
+        var setContactErr = function (field, errEl, msg) {
+          field.setAttribute("aria-invalid", "true");
+          errEl.textContent = msg;
+        };
+        var clearContactErr = function (field, errEl) {
+          field.removeAttribute("aria-invalid");
+          errEl.textContent = "";
+        };
 
-      contactEmail.addEventListener("input", function () {
-        if (contactEmail.getAttribute("aria-invalid") === "true") clearContactErr(contactEmail, contactEmailErr);
-      });
-      contactMessage.addEventListener("input", function () {
-        if (contactMessage.getAttribute("aria-invalid") === "true") clearContactErr(contactMessage, contactMessageErr);
-      });
+        contactEmail.addEventListener("input", function () {
+          if (contactEmail.getAttribute("aria-invalid") === "true") clearContactErr(contactEmail, contactEmailErr);
+        });
+        contactMessage.addEventListener("input", function () {
+          if (contactMessage.getAttribute("aria-invalid") === "true") clearContactErr(contactMessage, contactMessageErr);
+        });
 
-      contactForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        var valid = true;
-        var emailVal = contactEmail.value.trim();
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
-          setContactErr(contactEmail, contactEmailErr, "Please enter a valid email address.");
-          valid = false;
-        }
-        var msgVal = contactMessage.value.trim();
-        if (msgVal.length < 10) {
-          setContactErr(contactMessage, contactMessageErr, "Please enter a message (at least 10 characters).");
-          valid = false;
-        }
-        if (!valid) return;
-        var submitBtn = contactForm.querySelector(".contact-submit");
-        submitBtn.disabled = true;
-        submitBtn.textContent = "Sending\u2026";
-        fetch("https://formspree.io/f/xnjkjnjq", {
-          method: "POST",
-          body: new FormData(contactForm),
-          headers: { Accept: "application/json" },
-        })
-          .then(function (res) { if (!res.ok) throw new Error("server-error"); return res.json(); })
-          .then(function () { contactForm.style.display = "none"; contactSuccess.style.display = "flex"; })
-          .catch(function () {
-            submitBtn.disabled = false;
-            submitBtn.textContent = "Send message";
-            setContactErr(contactMessage, contactMessageErr, "Something went wrong \u2014 please try again or email hello@abapeak.com directly.");
-          });
-      });
+        contactForm.addEventListener("submit", function (e) {
+          e.preventDefault();
+          var valid = true;
+          var emailVal = contactEmail.value.trim();
+          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailVal)) {
+            setContactErr(contactEmail, contactEmailErr, "Please enter a valid email address.");
+            valid = false;
+          }
+          var msgVal = contactMessage.value.trim();
+          if (msgVal.length < 10) {
+            setContactErr(contactMessage, contactMessageErr, "Please enter a message (at least 10 characters).");
+            valid = false;
+          }
+          if (!valid) return;
+          var tsField = contactForm.querySelector('[name="cf-turnstile-response"]');
+          if (!tsField || !tsField.value) {
+            resetTurnstileWidget("contact-turnstile");
+            setContactErr(contactMessage, contactMessageErr, "Please complete the verification and try again.");
+            return;
+          }
+          var submitBtn = contactForm.querySelector(".contact-submit");
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Sending\u2026";
+          fetch("https://formspree.io/f/xnjkjnjq", {
+            method: "POST",
+            body: new FormData(contactForm),
+            headers: { Accept: "application/json" },
+          })
+            .then(function (res) { if (!res.ok) throw new Error("server-error"); return res.json(); })
+            .then(function () { contactForm.style.display = "none"; contactSuccess.style.display = "flex"; })
+            .catch(function () {
+              submitBtn.disabled = false;
+              submitBtn.textContent = "Send message";
+              setContactErr(contactMessage, contactMessageErr, "Something went wrong \u2014 please try again or email hello@abapeak.com directly.");
+            });
+        });
+      }
 
       /* ============================================================
        Reveal-on-scroll
