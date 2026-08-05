@@ -12,11 +12,13 @@
       content="AI-powered ABA session notes for BCBAs and BCaBAs. Generate compliant 97155-HN and 97156-HN notes in seconds — with client data that never leaves your device."
     />
     <meta
+      id="theme-color-light"
       name="theme-color"
       content="#FAFAF7"
       media="(prefers-color-scheme: light)"
     />
     <meta
+      id="theme-color-dark"
       name="theme-color"
       content="#0F1413"
       media="(prefers-color-scheme: dark)"
@@ -34,9 +36,13 @@
       content="AI-powered ABA session notes for BCBAs and BCaBAs. Generate compliant 97155-HN and 97156-HN notes in seconds — with client data that never leaves your device."
     />
     <meta property="og:site_name" content="AbaPeak" />
+    <meta property="og:image" content="https://abapeak.com/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="AbaPeak — Clinical notes. Done in seconds." />
 
     <!-- Twitter / X -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
       content="AbaPeak — ABA session notes in seconds"
@@ -45,8 +51,10 @@
       name="twitter:description"
       content="AI-powered ABA session notes for BCBAs and BCaBAs. Generate compliant 97155-HN and 97156-HN notes in seconds — with client data that never leaves your device."
     />
+    <meta name="twitter:image" content="https://abapeak.com/og-image.png" />
 
     <link rel="icon" href="favicon.svg" />
+    <link rel="canonical" href="https://abapeak.com" />
 
     <style>
       /* ============================================================
@@ -360,9 +368,9 @@
       }
       .footer-links {
         display: inline-flex;
-        flex-wrap: nowrap;
+        flex-wrap: wrap;
         align-items: center;
-        gap: 18px;
+        gap: 8px 18px;
         white-space: nowrap;
       }
       .footer-link {
@@ -951,7 +959,7 @@
           if (s === "light" || s === "dark") {
             document.documentElement.setAttribute("data-theme", s);
           }
-        } catch (e) {}
+        } catch (e) {} // intentional: ignore storage failure (private mode)
 
         try {
           var noMotion =
@@ -1000,15 +1008,25 @@
           var ctas = document.querySelectorAll("#pricing a.pricing-cta");
           if (ctas.length === 3) {
             ctas[0].setAttribute("href", LS_URLS.monthly);
-            ctas[0].classList.add("lemonsqueezy-button");
             ctas[1].setAttribute("href", LS_URLS.annual);
-            ctas[1].classList.add("lemonsqueezy-button");
             ctas[2].setAttribute("href", LS_URLS.lifetime);
-            ctas[2].classList.add("lemonsqueezy-button");
-            // Class is added post-load, so re-init Lemon.js handlers
-            // (lemon.js auto-binds only on initial script execution).
             if (typeof window.createLemonSqueezy === "function") {
+              ctas[0].classList.add("lemonsqueezy-button");
+              ctas[1].classList.add("lemonsqueezy-button");
+              ctas[2].classList.add("lemonsqueezy-button");
+              // Class is added post-load, so re-init Lemon.js handlers
+              // (lemon.js auto-binds only on initial script execution).
               window.createLemonSqueezy();
+            } else {
+              // lemon.js CDN failed to load — no overlay handler will bind,
+              // so open checkout in a new tab rather than stranding the
+              // user on a same-tab navigation to lemonsqueezy.com (doc14).
+              ctas[0].setAttribute("target", "_blank");
+              ctas[0].setAttribute("rel", "noopener");
+              ctas[1].setAttribute("target", "_blank");
+              ctas[1].setAttribute("rel", "noopener");
+              ctas[2].setAttribute("target", "_blank");
+              ctas[2].setAttribute("rel", "noopener");
             }
           }
         });
@@ -1087,7 +1105,6 @@
                   autocomplete="email"
                   maxlength="254"
                   placeholder="you@clinic.com"
-                  aria-label="Work email"
                   aria-describedby="email-helper"
                   class="ap-field"
                 />
@@ -1337,7 +1354,7 @@
           </span>
         </div>
         <div class="footer-privacy">
-          We collect just your email, and use it for one thing: to tell you when we launch.
+          We collect only what you choose to share — your email for launch updates, and any message you send us through the contact form. Nothing else.
         </div>
       </footer>
     </div>
@@ -1364,20 +1381,39 @@
           themeBtn.setAttribute("aria-pressed", String(isDark));
         };
 
+        // Manual toggle overrides OS preference, so both theme-color metas
+        // must be forced to the chosen theme's color — otherwise mobile
+        // browser chrome keeps following the OS scheme instead of the toggle.
+        var syncThemeColorMeta = function (theme) {
+          var color = theme === "dark" ? "#0F1413" : "#FAFAF7";
+          var lightMeta = document.getElementById("theme-color-light");
+          var darkMeta = document.getElementById("theme-color-dark");
+          if (lightMeta) lightMeta.setAttribute("content", color);
+          if (darkMeta) darkMeta.setAttribute("content", color);
+        };
+
         syncToggleAria(getEffectiveTheme());
+        if (document.documentElement.getAttribute("data-theme")) {
+          syncThemeColorMeta(getEffectiveTheme());
+        }
 
         themeBtn.addEventListener("click", function () {
           var next = getEffectiveTheme() === "dark" ? "light" : "dark";
           document.documentElement.setAttribute("data-theme", next);
-          try { sessionStorage.setItem("abapeak-theme", next); } catch (e) {}
+          try { sessionStorage.setItem("abapeak-theme", next); } catch (e) {} // intentional: ignore storage failure (private mode)
           syncToggleAria(next);
+          syncThemeColorMeta(next);
         });
 
         if (window.matchMedia) {
           var osMq = window.matchMedia("(prefers-color-scheme: dark)");
           var onOsChange = function () {
             var attr = document.documentElement.getAttribute("data-theme");
-            if (attr !== "light" && attr !== "dark") syncToggleAria(osMq.matches ? "dark" : "light");
+            if (attr !== "light" && attr !== "dark") {
+              var osTheme = osMq.matches ? "dark" : "light";
+              syncToggleAria(osTheme);
+              syncThemeColorMeta(osTheme);
+            }
           };
           if (osMq.addEventListener) osMq.addEventListener("change", onOsChange);
           else if (osMq.addListener) osMq.addListener(onOsChange);
@@ -1418,7 +1454,7 @@
         };
         var clearHelperError = function () {
           input.removeAttribute("aria-invalid");
-          helper.textContent = "No spam. We'll let you know the moment it's live.";
+          helper.textContent = "No spam. We’ll let you know the moment it’s live.";
           helper.classList.remove("is-error");
           helper.removeAttribute("role");
         };
@@ -1537,6 +1573,8 @@
           targets.forEach(function (t) { t.classList.add("is-visible"); });
           return;
         }
+        // Deliberate fallback: reveals everything if scroll/IO never fires
+        // (e.g. no user scroll on a short page) so content isn't stuck hidden.
         var safety = setTimeout(function () { targets.forEach(function (t) { t.classList.add("is-visible"); }); }, 1500);
         var io = new IntersectionObserver(
           function (entries) {

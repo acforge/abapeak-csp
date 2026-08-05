@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Terms of Service — AbaPeak</title>
+    <link rel="canonical" href="https://abapeak.com/tos" />
     <style>
       @font-face {
         font-family: "Sora";
@@ -48,10 +49,13 @@
           sans-serif;
         font-size: 1rem;
         line-height: 1.75;
-        color: #1a1a1a;
-        background: #fafaf7;
+        color: var(--fg);
+        background: var(--bg);
         margin: 0;
         padding: 0;
+        transition:
+          background-color 220ms var(--ease-out),
+          color 220ms var(--ease-out);
       }
 
       .container {
@@ -63,7 +67,7 @@
       .back {
         display: inline-block;
         font-size: 0.875rem;
-        color: #0e7c7b;
+        color: var(--brand-teal);
         text-decoration: none;
         margin-bottom: 2rem;
       }
@@ -78,13 +82,13 @@
           sans-serif;
         font-size: 2rem;
         font-weight: 700;
-        color: #0e7c7b;
+        color: var(--brand-teal);
         margin: 0 0 0.25rem;
       }
 
       .updated {
         font-size: 0.875rem;
-        color: #666;
+        color: var(--fg-3);
         margin-bottom: 2.5rem;
       }
 
@@ -95,7 +99,7 @@
           sans-serif;
         font-size: 1.2rem;
         font-weight: 600;
-        color: #1e3a3a;
+        color: var(--brand-forest);
         margin-top: 2.5rem;
         margin-bottom: 0.5rem;
       }
@@ -114,13 +118,15 @@
       }
 
       a {
-        color: #0e7c7b;
+        color: var(--brand-teal);
       }
       a:hover {
-        color: #1e3a3a;
+        color: var(--brand-forest);
       }
 
       :root {
+        --bg: #fafaf7;
+        --fg: #1a1a1a;
         --line: #e8e6de;
         --line-strong: #d6d2c6;
         --fg-2: #3a4847;
@@ -131,6 +137,8 @@
       }
       @media (prefers-color-scheme: dark) {
         :root {
+          --bg: #0f1413;
+          --fg: #e6edeb;
           --line: #243330;
           --line-strong: #34433f;
           --fg-2: #b8c8c5;
@@ -186,11 +194,14 @@
   </head>
   <body>
     <div class="container">
-      <a href="/" class="back">← Back to AbaPeak</a>
+      <header>
+        <a href="/" class="back">← Back to AbaPeak</a>
 
-      <h1>Terms of Service</h1>
-      <p class="updated">Last updated: June 19, 2026</p>
+        <h1>Terms of Service</h1>
+        <p class="updated">Last updated: June 19, 2026</p>
+      </header>
 
+      <main>
       <h2>1. Agreement to Terms</h2>
       <p>
         By accessing or using AbaPeak ("Service"), you agree to be bound by
@@ -377,6 +388,7 @@
         Questions about these Terms? Email us at
         <a href="mailto:hello@abapeak.com">hello@abapeak.com</a>.
       </p>
+      </main>
 
       <footer class="footer">
         <div class="footer-row">
