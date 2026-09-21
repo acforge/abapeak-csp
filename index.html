@@ -6,10 +6,10 @@
       name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover"
     />
-    <title>AbaPeak — ABA session notes in seconds</title>
+    <title>AbaPeak — ABA session notes, first draft in minutes</title>
     <meta
       name="description"
-      content="AI-powered ABA session notes for BCBAs and BCaBAs. Generate compliant 97155-HN and 97156-HN notes in seconds — with client data that never leaves your device."
+      content="ABA session notes for BCBAs and BCaBAs — get a structured 97155 or 97156 DAP-format first draft to review, with client identifiers scrubbed on your device."
     />
     <meta
       id="theme-color-light"
@@ -29,27 +29,27 @@
     <meta property="og:url" content="https://abapeak.com" />
     <meta
       property="og:title"
-      content="AbaPeak — ABA session notes in seconds"
+      content="AbaPeak — ABA session notes, first draft in minutes"
     />
     <meta
       property="og:description"
-      content="AI-powered ABA session notes for BCBAs and BCaBAs. Generate compliant 97155-HN and 97156-HN notes in seconds — with client data that never leaves your device."
+      content="ABA session notes for BCBAs and BCaBAs — get a structured 97155 or 97156 DAP-format first draft to review, with client identifiers scrubbed on your device."
     />
     <meta property="og:site_name" content="AbaPeak" />
     <meta property="og:image" content="https://abapeak.com/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:image:alt" content="AbaPeak — Clinical notes. Done in seconds." />
+    <meta property="og:image:alt" content="AbaPeak — Clinical notes. First draft in minutes." />
 
     <!-- Twitter / X -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
-      content="AbaPeak — ABA session notes in seconds"
+      content="AbaPeak — ABA session notes, first draft in minutes"
     />
     <meta
       name="twitter:description"
-      content="AI-powered ABA session notes for BCBAs and BCaBAs. Generate compliant 97155-HN and 97156-HN notes in seconds — with client data that never leaves your device."
+      content="ABA session notes for BCBAs and BCaBAs — get a structured 97155 or 97156 DAP-format first draft to review, with client identifiers scrubbed on your device."
     />
     <meta name="twitter:image" content="https://abapeak.com/og-image.png" />
 
@@ -480,13 +480,6 @@
         pointer-events: none;
       }
 
-      .email-form {
-        display: grid;
-        gap: 10px;
-        width: 100%;
-        max-width: 560px;
-      }
-
       .ap-field {
         height: 52px;
         padding: 0 16px;
@@ -546,25 +539,28 @@
         white-space: nowrap;
       }
 
-      .form-row {
-        display: flex;
+      .hero-cta-wrap {
+        display: grid;
         gap: 10px;
-        align-items: stretch;
+        justify-items: start;
         width: 100%;
       }
-      .form-row > * { flex: 1 1 0; min-width: 0; }
-      @media (max-width: 599px) {
-        .form-row { flex-direction: column; }
-        .form-row > * { flex: none; width: 100%; }
+      .hero-cta {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 28px;
+        text-decoration: none;
       }
-
-      .email-helper {
+      .hero-cta-note {
         font-family: var(--font-body);
         font-size: 13px;
         color: var(--fg-3);
         line-height: 1.4;
       }
-      .email-helper.is-error { color: var(--danger); }
+      @media (max-width: 599px) {
+        .hero-cta { width: 100%; }
+      }
 
       /* ============================================================
        Success state (shared)
@@ -1082,54 +1078,22 @@
             style="margin:0;font-family:var(--font-display);font-weight:600;font-size:clamp(2rem,6.5vw,3.75rem);line-height:1.08;letter-spacing:-0.022em;color:var(--fg);text-wrap:balance;"
           >
             Clinical notes.<br />
-            Done in&nbsp;<span class="amber-highlight">seconds</span><span style="color:var(--brand-teal)">.</span>
+            Drafted in&nbsp;<span class="amber-highlight">minutes</span><span style="color:var(--brand-teal)">.</span>
           </h1>
 
           <p
             class="reveal hero-sub"
             style="margin:0;font-family:var(--font-body);font-size:clamp(15px,2.4vw,18px);line-height:1.55;color:var(--fg-2);transition-delay:80ms;"
           >
-            AbaPeak turns a quick session summary into a complete, DAP-format
-            clinical note for BCBAs and BCaBAs &mdash; in under 30 seconds.
+            Describe the session in plain language and AbaPeak returns a complete,
+            DAP-format first draft &mdash; for BCBAs and BCaBAs &mdash; ready to
+            review and finalize in a fraction of the usual time.
           </p>
 
           <div class="reveal hero-form-wrap" style="transition-delay:160ms">
-            <form id="email-capture-form" class="email-form" novalidate>
-              <label for="email-input" class="sr-only">Work email address</label>
-              <input type="text" name="_gotcha" tabindex="-1" autocomplete="off" aria-hidden="true" class="honeypot-field" />
-              <div class="form-row">
-                <input
-                  id="email-input"
-                  name="email"
-                  type="email"
-                  autocomplete="email"
-                  maxlength="254"
-                  placeholder="you@clinic.com"
-                  aria-describedby="email-helper"
-                  class="ap-field"
-                />
-                <button type="submit" class="ap-btn">Join the waitlist</button>
-              </div>
-              <div id="email-helper" class="email-helper">
-                No spam. We&rsquo;ll let you know the moment it&rsquo;s live.
-              </div>
-              <div id="waitlist-turnstile" class="cf-turnstile" data-sitekey="0x4AAAAAAEGaP50MWdjarGda" data-callback="turnstileNoop" data-expired-callback="onWaitlistTurnstileExpired" data-error-callback="onWaitlistTurnstileError"></div>
-            </form>
-            <div id="email-success" class="email-success" role="status" aria-live="polite">
-              <span class="success-icon">
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="20 6 9 17 4 12" />
-                </svg>
-              </span>
-              <div>
-                <div class="success-title">You&rsquo;re in. Welcome.</div>
-                <div class="success-body">
-                  Thanks for trusting us with your inbox. We&rsquo;re heads-down
-                  building AbaPeak, and you&rsquo;ll be among the very first to
-                  know when it&rsquo;s ready. One email when we launch &mdash;
-                  no noise before it, no spam after it. That&rsquo;s a promise.
-                </div>
-              </div>
+            <div class="hero-cta-wrap">
+              <a href="https://app.abapeak.com" class="ap-btn hero-cta">Start free for 10 days &rarr;</a>
+              <div class="hero-cta-note">10 days free. No credit card required.</div>
             </div>
           </div>
 
@@ -1140,8 +1104,8 @@
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                 </span>
                 <div>
-                  <div class="feature-title">Your data never leaves your device</div>
-                  <div class="feature-sub">Client names and identifying details are scrubbed in your browser before anything is sent. Zero patient information on our servers.</div>
+                  <div class="feature-title">Scrubbed before anything is sent</div>
+                  <div class="feature-sub">Detected client names and identifying details are replaced with placeholders in your browser before any request is sent, so they aren&rsquo;t part of what leaves your device.</div>
                 </div>
               </li>
               <li class="reveal feature-item" style="transition-delay:330ms">
@@ -1149,8 +1113,8 @@
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                 </span>
                 <div>
-                  <div class="feature-title">A finished note in under 30 seconds</div>
-                  <div class="feature-sub">Describe the session in plain language and AbaPeak writes the DAP note &mdash; turning roughly eight minutes of writing into a few seconds. Copy it. Done.</div>
+                  <div class="feature-title">A complete first draft in minutes</div>
+                  <div class="feature-sub">Describe the session in plain language and AbaPeak returns a complete DAP-format first draft &mdash; about eight minutes of writing turned into a draft you review and finalize. Review, correct, done.</div>
                 </div>
               </li>
               <li class="reveal feature-item" style="transition-delay:440ms">
@@ -1159,7 +1123,7 @@
                 </span>
                 <div>
                   <div class="feature-title">Built for ABA, not generic healthcare</div>
-                  <div class="feature-sub">97155-HN and 97156-HN note types, DAP format, credential-aware. Not a one-size-fits-all notes app.</div>
+                  <div class="feature-sub">97155 and 97156 note types, DAP format, credential-aware. Not a one-size-fits-all notes app.</div>
                 </div>
               </li>
             </ul>
@@ -1173,7 +1137,7 @@
         <!-- How It Works -->
         <section id="how-it-works" class="reveal section-block" aria-labelledby="how-heading">
           <h2 id="how-heading" class="section-heading">How it works</h2>
-          <p class="section-sub">Three steps. Under two minutes from first field to finished draft.</p>
+          <p class="section-sub">Three steps. From first field to a first draft in the time it takes to describe the session.</p>
           <ol class="steps-list">
             <li class="step-item">
               <span class="step-num" aria-hidden="true">1</span>
@@ -1186,14 +1150,14 @@
               <span class="step-num" aria-hidden="true">2</span>
               <div>
                 <div class="step-title">Client data is scrubbed on your device</div>
-                <div class="step-body">Before anything is sent, AbaPeak replaces any detected identifiers with placeholders. What leaves your device is already de-identified.</div>
+                <div class="step-body">Before anything is sent, AbaPeak replaces any detected identifiers with placeholders. What leaves your device carries those placeholders in place of the identifiers AbaPeak detected &mdash; not the client information itself.</div>
               </div>
             </li>
             <li class="step-item">
               <span class="step-num" aria-hidden="true">3</span>
               <div>
                 <div class="step-title">Review, finalize, copy to your EHR</div>
-                <div class="step-body">A complete DAP-format first draft is ready in seconds. You review it, correct anything that&rsquo;s off, and paste it into your EHR. The clinical judgment stays yours.</div>
+                <div class="step-body">A complete DAP-format first draft is ready in minutes. You review it, correct anything that&rsquo;s off, and paste it into your EHR. The clinical judgment stays yours.</div>
               </div>
             </li>
           </ol>
@@ -1208,7 +1172,7 @@
               <div class="pricing-plan">Monthly</div>
               <div class="pricing-amount">$15<span class="pricing-per">/mo</span></div>
               <ul class="pricing-features">
-                <li>Unlimited 97155-HN + 97156-HN notes</li>
+                <li>Unlimited 97155 + 97156 notes</li>
                 <li>DAP format, credential-aware</li>
                 <li>Note history on your device</li>
                 <li>Cancel any time</li>
@@ -1222,7 +1186,7 @@
               <div class="pricing-equiv">$12/month &mdash; save $36</div>
               <ul class="pricing-features">
                 <li>Everything in Monthly</li>
-                <li>2 months free vs monthly</li>
+                <li>More than two months free vs monthly</li>
                 <li>Priority support</li>
               </ul>
               <a href="https://app.abapeak.com" class="ap-btn pricing-cta">Start free trial</a>
@@ -1251,15 +1215,15 @@
           <dl class="faq-list">
             <div class="faq-item">
               <dt class="faq-q">Is AbaPeak HIPAA-compliant?</dt>
-              <dd class="faq-a">AbaPeak is not a HIPAA-covered entity and does not function as a Business Associate. The system is designed so that client identifiers are replaced with placeholders on your device before any request is transmitted &mdash; our servers never receive readable client information. You are responsible for using client aliases (not real names) in all fields.</dd>
+              <dd class="faq-a">AbaPeak is not a HIPAA-covered entity and does not function as a Business Associate. It&rsquo;s designed so that detected client identifiers are replaced with placeholders in your browser before any request is sent &mdash; so what leaves your device carries those placeholders in place of the identifiers AbaPeak detected, not the client information itself. Detection can&rsquo;t be guaranteed to catch everything, which is why you&rsquo;re responsible for using client aliases (not real names) in every field.</dd>
             </div>
             <div class="faq-item">
               <dt class="faq-q">What note types does AbaPeak support?</dt>
-              <dd class="faq-a">AbaPeak generates DAP-format notes for CPT codes 97155-HN (Protocol Modification) and 97156-HN (Caregiver Training), for both BCBAs and BCaBAs.</dd>
+              <dd class="faq-a">AbaPeak generates DAP-format notes for CPT codes 97155 (Protocol Modification) and 97156 (Caregiver Training), for both BCBAs and BCaBAs.</dd>
             </div>
             <div class="faq-item">
               <dt class="faq-q">Where are my notes stored?</dt>
-              <dd class="faq-a">Notes are saved only in your browser&rsquo;s local storage on your own device. They are not stored on our servers. Clearing your browser data or switching devices will remove your note history.</dd>
+              <dd class="faq-a">Your notes stay on your device &mdash; saved only in your browser, on the machine you&rsquo;re using. Clearing your browser data or switching devices removes your note history.</dd>
             </div>
             <div class="faq-item">
               <dt class="faq-q">Can I cancel my subscription?</dt>
@@ -1354,7 +1318,7 @@
           </span>
         </div>
         <div class="footer-privacy">
-          We collect only what you choose to share — your email for launch updates, and any message you send us through the contact form. Nothing else.
+          You share your email and message when you use the contact form, and Lemon Squeezy collects your email if you buy a subscription. To keep the free trial fair and to take payments, the app also records a small amount of abuse-prevention data — a hashed license key, a hashed device fingerprint, and a hashed IP address, none of it tied to your notes or client information — and it relies on third-party providers for checkout (Lemon Squeezy) and bot protection (Cloudflare Turnstile).
         </div>
       </footer>
     </div>
@@ -1432,68 +1396,8 @@
           }
         } catch (e) {}
       }
-      function onWaitlistTurnstileExpired() { resetTurnstileWidget("waitlist-turnstile"); }
-      function onWaitlistTurnstileError() { resetTurnstileWidget("waitlist-turnstile"); }
       function onContactTurnstileExpired() { resetTurnstileWidget("contact-turnstile"); }
       function onContactTurnstileError() { resetTurnstileWidget("contact-turnstile"); }
-
-      /* ============================================================
-       Waitlist form — POST to Formspree (meedkyqj)
-       ============================================================ */
-      var form = document.getElementById("email-capture-form");
-      var input = document.getElementById("email-input");
-      var helper = document.getElementById("email-helper");
-      var success = document.getElementById("email-success");
-
-      if (form && input && helper && success) {
-        var setHelperError = function (msg) {
-          input.setAttribute("aria-invalid", "true");
-          helper.textContent = msg;
-          helper.classList.add("is-error");
-          helper.setAttribute("role", "alert");
-        };
-        var clearHelperError = function () {
-          input.removeAttribute("aria-invalid");
-          helper.textContent = "No spam. We’ll let you know the moment it’s live.";
-          helper.classList.remove("is-error");
-          helper.removeAttribute("role");
-        };
-
-        input.addEventListener("input", function () {
-          if (input.getAttribute("aria-invalid") === "true") clearHelperError();
-        });
-
-        form.addEventListener("submit", function (e) {
-          e.preventDefault();
-          var email = input.value.trim();
-          if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-            setHelperError("Please enter a valid email address.");
-            input.focus();
-            return;
-          }
-          var tsField = form.querySelector('[name="cf-turnstile-response"]');
-          if (!tsField || !tsField.value) {
-            resetTurnstileWidget("waitlist-turnstile");
-            setHelperError("Please complete the verification and try again.");
-            return;
-          }
-          var btn = form.querySelector(".ap-btn");
-          btn.disabled = true;
-          btn.textContent = "Sending\u2026";
-          fetch("https://formspree.io/f/meedkyqj", {
-            method: "POST",
-            body: new FormData(form),
-            headers: { Accept: "application/json" },
-          })
-            .then(function (res) { if (!res.ok) throw new Error("server-error"); return res.json(); })
-            .then(function () { form.style.display = "none"; success.classList.add("is-visible"); })
-            .catch(function () {
-              btn.disabled = false;
-              btn.textContent = "Join the waitlist";
-              setHelperError("Something went wrong \u2014 please try again or email us at hello@abapeak.com.");
-            });
-        });
-      }
 
       /* ============================================================
        Contact form — POST to Formspree (xnjkjnjq) — CS-01

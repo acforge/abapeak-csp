@@ -136,7 +136,7 @@
 
       <main>
       <h2>1. Who We Are</h2>
-      <p>AbaPeak is a web-based tool that helps Board Certified Behavior Analysts (BCBAs) and Board Certified Assistant Behavior Analysts (BCaBAs) generate structured ABA session notes in DAP format for CPT codes 97155-HN (Protocol Modification) and 97156-HN (Caregiver Training).</p>
+      <p>AbaPeak is a web-based tool that helps Board Certified Behavior Analysts (BCBAs) and Board Certified Assistant Behavior Analysts (BCaBAs) generate structured ABA session notes in DAP format for CPT codes 97155 (Protocol Modification) and 97156 (Caregiver Training).</p>
       <p>AbaPeak is operated by <strong>IT Integrated Solutions LLC</strong>. If you have questions about this policy, contact us at <a href="mailto:hello@abapeak.com">hello@abapeak.com</a>.</p>
 
       <h2>2. This Service Is Not a HIPAA-Covered Entity</h2>
@@ -146,7 +146,7 @@
       <h2>3. What Information We Collect</h2>
 
       <h3>a. Email address</h3>
-      <p>If you join our waitlist, we collect your email address to send you product updates. Waitlist signups are routed through Formspree (see §7) to our inbox. If you purchase a subscription, Lemon Squeezy collects your email at checkout and we use it to communicate trial status, billing, and subscription details.</p>
+      <p>If you contact us through the support form, your email address and message are routed through Formspree (see §7) to our inbox. If you purchase a subscription, Lemon Squeezy collects your email at checkout and we use it to communicate trial status, billing, and subscription details.</p>
 
       <h3>b. Payment information</h3>
       <p>Subscription payments are processed by <a href="https://www.lemonsqueezy.com" target="_blank" rel="noopener">Lemon Squeezy</a>, which serves as the Merchant of Record. AbaPeak does not collect, store, or have access to your payment card details. Lemon Squeezy's privacy policy governs payment data.</p>
@@ -170,12 +170,12 @@
       <ul>
         <li>You enter session information using a <strong>client alias</strong> (e.g., "Client-07"), not a real client name or identifier.</li>
         <li>Before any request is transmitted, a built-in scrubber runs entirely on your device. It identifies and replaces any detected client identifiers with placeholders.</li>
-        <li>What is transmitted to generate a note is already de-identified. Our servers and our AI provider receive only the scrubbed, placeholder-containing content — not your original input.</li>
+        <li>What is transmitted to generate a note carries placeholders in place of the identifiers the scrubber detected. Our servers and our AI provider receive only that scrubbed, placeholder-containing content — not your original input. Because no automated scrubber can be guaranteed to detect every identifier, you remain responsible for using client aliases.</li>
         <li>Generated notes are <strong>not stored on our servers</strong>. Notes are saved only in your browser's local storage (IndexedDB) on your own device.</li>
       </ul>
 
       <h2>5. What We Do Not Collect</h2>
-      <p>AbaPeak does not collect:</p>
+      <p>AbaPeak is designed not to receive or store:</p>
       <ul>
         <li>Real client names, dates of birth, Social Security numbers, or other personal identifiers</li>
         <li>ICD-10 codes, diagnostic information, clinical notes, or session content in readable form</li>
@@ -191,12 +191,13 @@
       <ul>
         <li><strong>Lemon Squeezy</strong> — payment processing and license management (Merchant of Record). <a href="https://www.lemonsqueezy.com/privacy" target="_blank" rel="noopener">Privacy Policy</a></li>
         <li><strong>Cloudflare</strong> — web hosting, edge network, and DNS. <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Privacy Policy</a></li>
-        <li><strong>Anthropic</strong> — AI model provider for note generation. Receives only the scrubbed, de-identified request from your device. <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">Privacy Policy</a></li>
-        <li><strong>Formspree</strong> — waitlist and contact form submission routing. When you join our waitlist or contact us via our support form, your email address and message are transmitted through Formspree to our inbox. <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a></li>
+        <li><strong>Cloudflare Turnstile</strong> — bot protection on our forms. Runs in your browser when you load the page and may process technical signals (such as your IP address and browser characteristics) to tell people from automated traffic. <a href="https://www.cloudflare.com/privacypolicy/" target="_blank" rel="noopener">Privacy Policy</a></li>
+        <li><strong>Anthropic</strong> — AI model provider for note generation. Receives only the scrubbed, placeholder-containing request from your device — not your original input. <a href="https://www.anthropic.com/legal/privacy" target="_blank" rel="noopener">Privacy Policy</a></li>
+        <li><strong>Formspree</strong> — contact form submission routing. When you contact us via our support form, your email address and message are transmitted through Formspree to our inbox. <a href="https://formspree.io/legal/privacy-policy" target="_blank" rel="noopener">Privacy Policy</a></li>
       </ul>
 
       <h2>8. Data Retention</h2>
-      <p>We retain your email address for as long as you have an active subscription or open trial. You may request deletion at any time by emailing <a href="mailto:hello@abapeak.com">hello@abapeak.com</a> and we will respond within 30 days. Generated notes and session data are stored only on your device and can be cleared from within the app at any time.</p>
+      <p>We retain your email address for as long as you have an active subscription. You may request deletion at any time by emailing <a href="mailto:hello@abapeak.com">hello@abapeak.com</a> and we will respond within 30 days. Generated notes and session data are stored only on your device and can be cleared from within the app at any time.</p>
 
       <h2>9. Your Rights</h2>
       <p>You may request access to, correction of, or deletion of any personal information we hold about you. Contact us at <a href="mailto:hello@abapeak.com">hello@abapeak.com</a>. We will respond within 30 days.</p>
