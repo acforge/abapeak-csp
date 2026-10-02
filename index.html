@@ -866,6 +866,8 @@
         font-size: 12px;
         font-weight: 700;
       }
+      .ap-btn--static,
+      .ap-btn--static:hover:not(:disabled) { cursor: default; background: var(--brand-teal); }
       .pricing-cta {
         text-decoration: none;
         display: flex;
@@ -1040,7 +1042,7 @@
           <a href="#contact" class="topbar-nav-link">Contact</a>
         </nav>
         <div class="right">
-          <a href="https://app.abapeak.com" class="ap-btn ap-btn--sm">Try it free &rarr;</a>
+          <a href="#pricing" class="ap-btn ap-btn--sm">Launching early 2027</a>
           <button
             type="button"
             id="theme-toggle"
@@ -1085,15 +1087,15 @@
             class="reveal hero-sub"
             style="margin:0;font-family:var(--font-body);font-size:clamp(15px,2.4vw,18px);line-height:1.55;color:var(--fg-2);transition-delay:80ms;"
           >
-            Describe the session in plain language and AbaPeak returns a complete,
+            Fill in a structured session form and AbaPeak returns a
             DAP-format first draft &mdash; for BCBAs and BCaBAs &mdash; ready to
             review and finalize in a fraction of the usual time.
           </p>
 
           <div class="reveal hero-form-wrap" style="transition-delay:160ms">
             <div class="hero-cta-wrap">
-              <a href="https://app.abapeak.com" class="ap-btn hero-cta">Start free for 10 days &rarr;</a>
-              <div class="hero-cta-note">10 days free. No credit card required.</div>
+              <a href="https://www.linkedin.com/company/abapeak" target="_blank" rel="noopener noreferrer" class="ap-btn hero-cta">Follow AbaPeak on LinkedIn &rarr;</a>
+              <div class="hero-cta-note">Launching early 2027. At launch: 10 days free, no credit card required.</div>
             </div>
           </div>
 
@@ -1113,8 +1115,8 @@
                   <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
                 </span>
                 <div>
-                  <div class="feature-title">A complete first draft in minutes</div>
-                  <div class="feature-sub">Describe the session in plain language and AbaPeak returns a complete DAP-format first draft &mdash; about eight minutes of writing turned into a draft you review and finalize. Review, correct, done.</div>
+                  <div class="feature-title">A first draft in minutes</div>
+                  <div class="feature-sub">Fill in the session form and AbaPeak returns a DAP-format first draft &mdash; about eight minutes of writing turned into a draft you review and finalize. Review, correct, done.</div>
                 </div>
               </li>
               <li class="reveal feature-item" style="transition-delay:440ms">
@@ -1137,13 +1139,13 @@
         <!-- How It Works -->
         <section id="how-it-works" class="reveal section-block" aria-labelledby="how-heading">
           <h2 id="how-heading" class="section-heading">How it works</h2>
-          <p class="section-sub">Three steps. From first field to a first draft in the time it takes to describe the session.</p>
+          <p class="section-sub">Three steps, from first field to first draft.</p>
           <ol class="steps-list">
             <li class="step-item">
               <span class="step-num" aria-hidden="true">1</span>
               <div>
                 <div class="step-title">Fill in the session summary</div>
-                <div class="step-body">Enter your client alias, the date, session duration, what happened, and what you&rsquo;re planning next. No free-text narrative &mdash; structured fields only.</div>
+                <div class="step-body">Enter your client alias, the session date and times, what happened, and what you&rsquo;re planning next. The form is structured: dropdowns, checkboxes and short written fields. You don&rsquo;t write the note itself.</div>
               </div>
             </li>
             <li class="step-item">
@@ -1157,7 +1159,7 @@
               <span class="step-num" aria-hidden="true">3</span>
               <div>
                 <div class="step-title">Review, finalize, copy to your EHR</div>
-                <div class="step-body">A complete DAP-format first draft is ready in minutes. You review it, correct anything that&rsquo;s off, and paste it into your EHR. The clinical judgment stays yours.</div>
+                <div class="step-body">A DAP-format first draft is ready in minutes. You review it, correct anything that&rsquo;s off, and paste it into your EHR. The clinical judgment stays yours.</div>
               </div>
             </li>
           </ol>
@@ -1166,30 +1168,28 @@
         <!-- Pricing -->
         <section id="pricing" class="reveal section-block" aria-labelledby="pricing-heading">
           <h2 id="pricing-heading" class="section-heading">Simple pricing</h2>
-          <p class="section-sub">Start free for 10 days &mdash; no credit card required.</p>
+          <p class="section-sub">Launch pricing. AbaPeak opens in early 2027, and every plan will start with a 10-day free trial, no credit card required.</p>
           <div class="pricing-grid">
             <div class="pricing-card">
               <div class="pricing-plan">Monthly</div>
               <div class="pricing-amount">$15<span class="pricing-per">/mo</span></div>
               <ul class="pricing-features">
-                <li>Unlimited 97155 + 97156 notes</li>
+                <li>97155 + 97156 notes, up to 50 per day</li>
                 <li>DAP format, credential-aware</li>
                 <li>Note history on your device</li>
                 <li>Cancel any time</li>
               </ul>
-              <a href="https://app.abapeak.com" class="ap-btn pricing-cta">Start free trial</a>
+              <span class="ap-btn ap-btn--static pricing-cta">Available at launch</span>
             </div>
             <div class="pricing-card pricing-card--featured">
-              <div class="pricing-badge">Best value</div>
               <div class="pricing-plan">Annual</div>
               <div class="pricing-amount">$144<span class="pricing-per">/yr</span></div>
               <div class="pricing-equiv">$12/month &mdash; save $36</div>
               <ul class="pricing-features">
                 <li>Everything in Monthly</li>
                 <li>More than two months free vs monthly</li>
-                <li>Priority support</li>
               </ul>
-              <a href="https://app.abapeak.com" class="ap-btn pricing-cta">Start free trial</a>
+              <span class="ap-btn ap-btn--static pricing-cta">Available at launch</span>
             </div>
             <div class="pricing-card">
               <div class="pricing-plan">Lifetime</div>
@@ -1197,15 +1197,17 @@
               <div class="pricing-equiv">Limited to 150 seats</div>
               <ul class="pricing-features">
                 <li>Everything in Monthly</li>
-                <li>Pay once, use forever</li>
+                <li>One-time payment</li>
                 <li>No subscription</li>
               </ul>
-              <a href="https://app.abapeak.com" class="ap-btn pricing-cta">Get lifetime access</a>
+              <span class="ap-btn ap-btn--static pricing-cta">Available at launch</span>
             </div>
           </div>
           <p class="pricing-trial-note">
-            All plans include a <strong>10-day free trial</strong>, no credit card required.
-            Trial includes up to 2 caregiver training notes and 1 protocol modification note per day.
+            At launch, all plans will include a <strong>10-day free trial</strong>, no credit card required.
+            The trial will include up to 2 caregiver training notes and 1 protocol modification note per day.
+            Paid plans will include up to 50 notes per day; the daily count resets at midnight UTC.
+            Until then, <a href="https://www.linkedin.com/company/abapeak" target="_blank" rel="noopener noreferrer">follow AbaPeak on LinkedIn</a> for launch updates.
           </p>
         </section>
 
@@ -1231,7 +1233,7 @@
             </div>
             <div class="faq-item">
               <dt class="faq-q">What browsers does AbaPeak support?</dt>
-              <dd class="faq-a">AbaPeak works on Chrome, Edge, Firefox, and Safari on desktop and mobile. Chrome or Edge on Windows/Mac is recommended for the best experience. Some native date and time pickers behave differently across browsers &mdash; typed entry is always supported as a fallback.</dd>
+              <dd class="faq-a">AbaPeak works on Chrome, Edge, Firefox, and Safari on desktop and mobile. Chrome or Edge on Windows/Mac is recommended for the best experience. Some native date and time pickers behave differently across browsers &mdash; typed entry is supported as a fallback.</dd>
             </div>
           </dl>
         </section>
@@ -1239,7 +1241,7 @@
         <!-- Contact / CS-01 -->
         <section id="contact" class="reveal section-block" aria-labelledby="contact-heading">
           <h2 id="contact-heading" class="section-heading">Get in touch</h2>
-          <p class="section-sub">Questions, feedback, or need help? We reply within 24&ndash;48 hours.</p>
+          <p class="section-sub">Questions, feedback, or need help? Send us a message.</p>
           <div class="contact-phi-warning" role="note">
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex:none;margin-top:2px">
               <circle cx="12" cy="12" r="10"/>
@@ -1292,8 +1294,7 @@
               </svg>
             </span>
             <div>
-              <div class="success-title">Message received.</div>
-              <div class="success-body">We&rsquo;ll reply to your email within 24&ndash;48 hours.</div>
+              <div class="success-title">Message received. Thank you.</div>
             </div>
           </div>
         </section>
