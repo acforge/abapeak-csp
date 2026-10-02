@@ -9,7 +9,7 @@
     <title>AbaPeak — ABA session notes, first draft in minutes</title>
     <meta
       name="description"
-      content="ABA session notes for BCBAs and BCaBAs — get a structured 97155 or 97156 DAP-format first draft to review, with client identifiers scrubbed on your device."
+      content="ABA session notes for BCBAs and BCaBAs — get a structured 97155 or 97156 DAP-format first draft to review, with detected client identifiers replaced on your device."
     />
     <meta
       id="theme-color-light"
@@ -33,7 +33,7 @@
     />
     <meta
       property="og:description"
-      content="ABA session notes for BCBAs and BCaBAs — get a structured 97155 or 97156 DAP-format first draft to review, with client identifiers scrubbed on your device."
+      content="ABA session notes for BCBAs and BCaBAs — get a structured 97155 or 97156 DAP-format first draft to review, with detected client identifiers replaced on your device."
     />
     <meta property="og:site_name" content="AbaPeak" />
     <meta property="og:image" content="https://abapeak.com/og-image.png" />
@@ -49,7 +49,7 @@
     />
     <meta
       name="twitter:description"
-      content="ABA session notes for BCBAs and BCaBAs — get a structured 97155 or 97156 DAP-format first draft to review, with client identifiers scrubbed on your device."
+      content="ABA session notes for BCBAs and BCaBAs — get a structured 97155 or 97156 DAP-format first draft to review, with detected client identifiers replaced on your device."
     />
     <meta name="twitter:image" content="https://abapeak.com/og-image.png" />
 
@@ -867,7 +867,13 @@
         font-weight: 700;
       }
       .ap-btn--static,
-      .ap-btn--static:hover:not(:disabled) { cursor: default; background: var(--brand-teal); }
+      .ap-btn--static:hover:not(:disabled),
+      .ap-btn--static:active:not(:disabled) {
+        cursor: default;
+        background: transparent;
+        border: 1px solid var(--line-strong);
+        color: var(--fg-2);
+      }
       .pricing-cta {
         text-decoration: none;
         display: flex;
